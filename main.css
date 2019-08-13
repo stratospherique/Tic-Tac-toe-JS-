@@ -1,0 +1,18 @@
+*,*::before,*::after {
+  padding: 0;
+  margin: 0;
+}
+
+.Board {
+  height: 600px;
+  width: 600px;
+  border: 1px solid;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell {
+  
+  width: 200px;
+  height: 200px;
+}
