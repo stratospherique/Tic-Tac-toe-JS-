@@ -39,16 +39,22 @@ const GameFinish = () => {
 }
 
 const UIController = () => {
-
+  return {    
+      playerOneInput: document.querySelector('.nameInput-1'),
+      playerTwoInput: document.querySelector('.nameInput-2')    
+  }
 }
+
 
 const GameTurn = () => {
 
 }
 
-const GameRunner = (() => {
-  const createPlayer = (name,mark) => Players.add(PlayerFacory(name,mark));
-})
+const createPlayers = () => {
+  console.log(UIController.playerOneInput);
+  Players().players.push(UIController.playerOneInput);
+  Players().players.push(UIController.playerTwoInput);
+}
 
 
 
