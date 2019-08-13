@@ -4,8 +4,19 @@ const GameBoard = () => {
   }
 }
 
-const Players = (name) => {
-  return { name };
+const Players = () => {
+  const players= [];
+  const add = function(player){
+    players.push(player)
+  }
+  return {
+    players,add
+  }
+}
+
+const PlayerFacory = (name) => {
+  const mark = "";
+  return { name ,mark};
 }
 
 const GameFinish = () => {
@@ -35,3 +46,11 @@ const GameTurn = () => {
 
 }
 
+const GameRunner = (() => {
+  const createPlayer = (name,mark) => Players.add(PlayerFacory(name,mark));
+})
+
+
+
+document.querySelector("#createP").addEventListener('click', createPlayers)
+const inputs = document.querySelectorAll('.nameInput')
