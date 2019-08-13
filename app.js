@@ -1,0 +1,37 @@
+const GameBoard = () => {
+  return {
+    board: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  }
+}
+
+const Players = (name) => {
+  return { name };
+}
+
+const GameFinish = () => {
+    const horizontal = {
+      top: [GameBoard().board[0], GameBoard().board[1], GameBoard().board[2]],
+      mid: [GameBoard().board[3], GameBoard().board[4], GameBoard().board[5]],
+      low: [GameBoard().board[6], GameBoard().board[7], GameBoard().board[8]]
+    }
+
+    const vertical = {
+      left: [GameBoard().board[0], GameBoard().board[3], GameBoard().board[6]],
+      middle: [GameBoard().board[1], GameBoard().board[4], GameBoard().board[7]],
+      right: [GameBoard().board[2], GameBoard().board[5], GameBoard().board[8]]
+    }
+
+    const diagonal = {
+      oneNine: [GameBoard().board[0], GameBoard().board[4], GameBoard().board[8]],
+      threeSeven: [GameBoard().board[2], GameBoard().board[4], GameBoard().board[6]]
+    }
+}
+
+const UIController = () => {
+
+}
+
+const GameTurn = () => {
+
+}
+
