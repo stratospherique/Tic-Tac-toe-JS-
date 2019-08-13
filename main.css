@@ -4,15 +4,17 @@
 }
 
 .Board {
-  height: 600px;
-  width: 600px;
-  border: 1px solid;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "top top top"
+    "mid mid mid"
+    "dow dow dow"
 }
 
-.cell {
-  
-  width: 200px;
+.cell {  
   height: 200px;
+  background-color: black;
+  border: 1px solid white;
 }

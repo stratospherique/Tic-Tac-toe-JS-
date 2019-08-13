@@ -1,6 +1,25 @@
 const GameBoard = () => {
+  const board = ["o", "2", "3", "4", "o", "6", "7", "8", "o"];
+  const position = {
+    horizontal: {
+      top: [board[0], board[1], board[2]].join(''),
+      mid: [board[3], board[4], board[5]].join(''),
+      low: [board[6], board[7], board[8]].join('')
+    },
+
+    vertical: {
+      left: [board[0], board[3], board[6]].join(''),
+      middle: [board[1], board[4], board[7]].join(''),
+      right: [board[2], board[5], board[8]].join('')
+    },
+
+    diagonal: {
+      oneNine: [board[0], board[4], board[8]].join(''),
+      threeSeven: [board[2], board[4], board[6]].join('')
+    }
+  }
   return {
-    board: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    board, position
   }
 }
 
@@ -19,23 +38,25 @@ const PlayerFactory = (name,mark) => {
   return { name ,mark};
 }
 
-const GameFinish = () => {
-    const horizontal = {
-      top: [GameBoard().board[0], GameBoard().board[1], GameBoard().board[2]],
-      mid: [GameBoard().board[3], GameBoard().board[4], GameBoard().board[5]],
-      low: [GameBoard().board[6], GameBoard().board[7], GameBoard().board[8]]
-    }
+const CheckWin = () => {
+  const x = 'xxx';
+  const o = 'ooo';
+  const horTop = GameBoard().position.horizontal.top;
+  const horMid = GameBoard().position.horizontal.mid;
+  const horDow = GameBoard().position.horizontal.down;
+  const verLeft = GameBoard().position.vertical.left;
+  const verMid = GameBoard().position.vertical.mid;
+  const verRight = GameBoard().position.vertical.right;
+  const diagOne = GameBoard().position.diagonal.oneNine;
+  const diagTwo = GameBoard().position.diagonal.threeSeven;
 
-    const vertical = {
-      left: [GameBoard().board[0], GameBoard().board[3], GameBoard().board[6]],
-      middle: [GameBoard().board[1], GameBoard().board[4], GameBoard().board[7]],
-      right: [GameBoard().board[2], GameBoard().board[5], GameBoard().board[8]]
-    }
-
-    const diagonal = {
-      oneNine: [GameBoard().board[0], GameBoard().board[4], GameBoard().board[8]],
-      threeSeven: [GameBoard().board[2], GameBoard().board[4], GameBoard().board[6]]
-    }
+  if( (horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)|| (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)){
+    console.log('X is the winner')
+  }else if ( (horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)|| (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o) ) {
+    console.log("O is the winner")
+  } else {
+    console.log("no winner yet")
+  }
 }
 
 const UIController = () => {
@@ -50,25 +71,16 @@ const GameTurn = () => {
 
 }
 
-<<<<<<< HEAD
 const GameRunner = (() => {
   const playersList = Players();
   const createPlayers = () => {
     const player1 = playersList.add(PlayerFactory(inputs[0].value,"X"));
     const player2 = playersList.add(PlayerFactory(inputs[1].value,"O"));
-    console.log(playersList.getPlayers());
-   
+    console.log(playersList.getPlayers());   
   }
 
   return {playersList,createPlayers}
 })();
-=======
-const createPlayers = () => {
-  console.log(UIController.playerOneInput);
-  Players().players.push(UIController.playerOneInput);
-  Players().players.push(UIController.playerTwoInput);
-}
->>>>>>> 99a8c841a15ccca5dacc74f824d8c39390a6d6b1
 
 
 
