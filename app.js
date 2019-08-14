@@ -74,9 +74,8 @@ const GameTurn = () => {
 const GameRunner = (() => {
   const playersList = Players();
   const createPlayers = () => {
-    const player1 = playersList.add(PlayerFactory(inputs[0].value,"X"));
-    const player2 = playersList.add(PlayerFactory(inputs[1].value,"O"));
-    console.log(playersList.getPlayers());   
+    const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value,"X"));
+    const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
   }
 
   return {playersList,createPlayers}
@@ -85,4 +84,3 @@ const GameRunner = (() => {
 
 
 document.querySelector("#createP").addEventListener('click', GameRunner.createPlayers)
-const inputs = document.querySelectorAll('.nameInput')
