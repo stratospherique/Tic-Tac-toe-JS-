@@ -3,9 +3,23 @@
   margin: 0;
 }
 
+.player-details {
+  margin: 1rem auto;
+  width: 60vw;
+  padding: 1rem;
+  border: 1px solid;
+  display: flex;
+}
 
+.ongoing {
+  justify-content: space-between;
+}
 
-.Board {
+.player-details > input {
+  margin: 0 .5rem;
+}
+
+.board {
   width: 600px;
   height: 600px;
   margin: 3rem auto;
@@ -16,6 +30,10 @@
     "top top top"
     "mid mid mid"
     "dow dow dow"
+}
+
+.hide {
+  display: none;
 }
 
 .cell {  

@@ -8,11 +8,14 @@
   <title>Document</title>
 </head>
 <body>
-  <input type="text" placeholder="Player 1 Name" class="nameInput-1">
-  <input type="text" placeholder="Player 2 Name" class="nameInput-2">
-  <button id="createP">Create Players</button>
+  <div class="player-details">
+      <input type="text" placeholder="Player 1 Name" class="nameInput-1">
+      <input type="text" placeholder="Player 2 Name" class="nameInput-2">
+      <button id="createP">Create Players</button>
+  </div>
+  
 
-  <div class="Board">
+  <div class="board hide">
     <div class="cell" id ="cell-1" onclick="clickChange(this.id)"></div>
     <div class="cell" id ="cell-2" onclick="clickChange(this.id)"></div>
     <div class="cell" id ="cell-3" onclick="clickChange(this.id)"></div>

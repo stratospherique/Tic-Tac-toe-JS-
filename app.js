@@ -28,6 +28,7 @@ const Players = () => {
   const getPlayers = () => {return players}
   const add = function(player){
     players.push(player)
+    return player
   }
   return {
     getPlayers,add
@@ -35,7 +36,8 @@ const Players = () => {
 }
 
 const PlayerFactory = (name,mark) => {
-  return { name ,mark};
+  const getPlayerName = () => name;
+  return { name ,mark,getPlayerName};
 }
 
 const CheckWin = () => {
@@ -63,7 +65,9 @@ const UIController = () => {
   return {    
       playerOneInput: document.querySelector('.nameInput-1'),
       playerTwoInput: document.querySelector('.nameInput-2'),
-      cellOne: document.getElementById("cell-1")    
+      cellOne: document.getElementById("cell-1"),
+      board: document.querySelector('.board'),
+      inputDetails: document.querySelector('.player-details')
   }
 }
 
@@ -84,6 +88,13 @@ const GameRunner = (() => {
   const createPlayers = () => {
     const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value,"X"));
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
+    UIController().board.classList.remove('hide');
+    const html = `
+      <div><span>Player 1 :</span><span>${player1.getPlayerName()}</span></div>
+      <div><span>Player 2 :</span><span>${player2.getPlayerName()}</span></div>
+    `
+    UIController().inputDetails.innerHTML = html;
+    UIController().inputDetails.classList.add("ongoing")
   }
 
   return {playersList,createPlayers}
