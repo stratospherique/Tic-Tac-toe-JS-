@@ -1,5 +1,5 @@
 const GameBoard = () => {
-  const board = ["o", "2", "3", "4", "o", "6", "7", "8", "o"];
+  const board = ["1", "2", "3", "4", "o", "6", "7", "8", "9"];
   const position = {
     horizontal: {
       top: [board[0], board[1], board[2]].join(''),
@@ -44,14 +44,14 @@ const PlayerFactory = (name,mark) => {
 const CheckWin = () => {
   const x = 'xxx';
   const o = 'ooo';
-  const horTop = GameBoard().position.horizontal.top;
-  const horMid = GameBoard().position.horizontal.mid;
-  const horDow = GameBoard().position.horizontal.down;
-  const verLeft = GameBoard().position.vertical.left;
-  const verMid = GameBoard().position.vertical.mid;
-  const verRight = GameBoard().position.vertical.right;
-  const diagOne = GameBoard().position.diagonal.oneNine;
-  const diagTwo = GameBoard().position.diagonal.threeSeven;
+  const horTop = GameRunner.gameBoard.position.horizontal.top;
+  const horMid = GameRunner.gameBoard.position.horizontal.mid;
+  const horDow = GameRunner.gameBoard.position.horizontal.down;
+  const verLeft = GameRunner.gameBoard.position.vertical.left;
+  const verMid = GameRunner.gameBoard.position.vertical.mid;
+  const verRight = GameRunner.gameBoard.position.vertical.right;
+  const diagOne = GameRunner.gameBoard.position.diagonal.oneNine;
+  const diagTwo = GameRunner.gameBoard.position.diagonal.threeSeven;
 
   if( (horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)|| (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)){
     console.log('X is the winner')
@@ -80,10 +80,10 @@ const UIController = () => {
   }
 }
 
-const clickChange = (clickID) => {
+const clickChange = (clickID,i) => {
   let change = document.getElementById(clickID);
   const mark =  GameRunner.currentPlayer().getPlayermark();
-
+ 
   if(mark === "X"){
     change.classList.add('color-blue');
   }else if(mark === "O"){    
@@ -91,12 +91,8 @@ const clickChange = (clickID) => {
   }else {
     change.classList.add('color-red')    
   }  
-  change.innerHTML= GameRunner.currentPlayer().getPlayermark()
-  /* if (mark === "X"){
-    GameRunner.currentPlayer = () => GameRunner.playersList.getPlayers()[1]
-  }else if(mark === "O"){
-    GameRunner.currentPlayer = () => GameRunner.playersList.getPlayers()[0]
-  } */
+  change.innerHTML= mark
+  GameRunner.gameBoard.board[i] = mark;
   GameRunner.changePlayer();
 }
 const GameTurn = () => {
@@ -105,10 +101,11 @@ const GameTurn = () => {
 }
 
 const GameRunner = (() => {
+  const gameBoard = GameBoard();
   const playersList = Players();
- 
-  let currentPlayer = () => playersList.getPlayers()[0];;
-  const changePlayer = () => {currentPlayer = () => [...playersList.getPlayers()].filter(e=>e.getPlayermark()==current.getPlayermark())[0]}
+  let index = 0;
+  let currentPlayer = () => playersList.getPlayers()[index];;
+  const changePlayer = () => {index = index == 1 ? 0 : 1}
   const createPlayers = () => {
     const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value,"X"));
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
@@ -123,7 +120,7 @@ const GameRunner = (() => {
 
  
 
-  return {playersList,createPlayers,currentPlayer,changePlayer}
+  return {playersList,createPlayers,currentPlayer,changePlayer,gameBoard}
 })();
 
 
