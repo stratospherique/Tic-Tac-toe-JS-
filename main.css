@@ -41,6 +41,9 @@
   background-color: black;
   border: 1px solid white;
   color: white;
+  display: grid;
+  place-content: center;
+  font-size: 2rem;
 }
 
 .color-red {

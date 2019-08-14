@@ -37,7 +37,8 @@ const Players = () => {
 
 const PlayerFactory = (name,mark) => {
   const getPlayerName = () => name;
-  return { name ,mark,getPlayerName};
+  const getPlayermark = () => mark;
+  return { name ,mark,getPlayerName,getPlayermark};
 }
 
 const CheckWin = () => {
@@ -66,6 +67,14 @@ const UIController = () => {
       playerOneInput: document.querySelector('.nameInput-1'),
       playerTwoInput: document.querySelector('.nameInput-2'),
       cellOne: document.getElementById("cell-1"),
+      cellTow: document.getElementById("cell-2"),
+      cellThree: document.getElementById("cell-3"),
+      cellFour: document.getElementById("cell-4"),
+      cellFive: document.getElementById("cell-5"),
+      cellSix: document.getElementById("cell-6"),
+      cellSeven: document.getElementById("cell-7"),
+      cellEight: document.getElementById("cell-8"),
+      cellNine: document.getElementById("cell-9"),
       board: document.querySelector('.board'),
       inputDetails: document.querySelector('.player-details')
   }
@@ -82,7 +91,7 @@ const clickChange = (clickID) => {
   }else {
     change.classList.add('color-red')    
   }  
-  
+  change.innerText = GameRunner.currentPlayer.getPlayermark();
 }
 const GameTurn = () => {
   let turn = 0;
@@ -91,6 +100,7 @@ const GameTurn = () => {
 
 const GameRunner = (() => {
   const playersList = Players();
+  let currentPlayer = playersList.getPlayers()[0]
   const createPlayers = () => {
     const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value,"X"));
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
@@ -103,7 +113,9 @@ const GameRunner = (() => {
     UIController().inputDetails.classList.add("ongoing")
   }
 
-  return {playersList,createPlayers}
+ 
+
+  return {playersList,createPlayers,currentPlayer}
 })();
 
 
