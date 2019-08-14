@@ -23,3 +23,11 @@
   background-color: black;
   border: 1px solid white;
 }
+
+.color-red {
+  background-color: red;
+}
+
+.color-black {
+  background-color: black;
+}

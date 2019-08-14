@@ -62,11 +62,19 @@ const CheckWin = () => {
 const UIController = () => {
   return {    
       playerOneInput: document.querySelector('.nameInput-1'),
-      playerTwoInput: document.querySelector('.nameInput-2')    
+      playerTwoInput: document.querySelector('.nameInput-2'),
+      cellOne: document.getElementById("cell-1")    
   }
 }
 
-
+const clickChange = (clickID) => {
+  let change = document.getElementById(clickID);
+  if(change.classList.value === "cell color-red"){
+    change.classList.add('color-black')
+  }
+  change.classList.add('color-red');
+  console.log(change.classList.value)
+}
 const GameTurn = () => {
 
 }
@@ -80,6 +88,7 @@ const GameRunner = (() => {
 
   return {playersList,createPlayers}
 })();
+
 
 
 
