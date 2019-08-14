@@ -82,16 +82,21 @@ const UIController = () => {
 
 const clickChange = (clickID) => {
   let change = document.getElementById(clickID);
-  if(change.classList.value === "cell color-red"){
-    change.classList.remove('color-red');
-    change.classList.add('color-black');
-  }else if(change.classList.value === "cell color-black"){
-    change.classList.remove('color-black');
+  const mark =  GameRunner.currentPlayer().mark;
+
+  if(mark === "X"){
+    change.classList.add('color-blue');
+  }else if(mark === "O"){    
     change.classList.add('color-red')
   }else {
     change.classList.add('color-red')    
   }  
-  change.innerText = GameRunner.currentPlayer.getPlayermark();
+  change.innerHTML= GameRunner.currentPlayer().getPlayermark()
+  if (mark === "X"){
+    GameRunner.currentPlayer = () => GameRunner.playersList.getPlayers()[1]
+  }else if(mark === "O"){
+    GameRunner.currentPlayer = () => GameRunner.playersList.getPlayers()[0]
+  }
 }
 const GameTurn = () => {
   let turn = 0;
@@ -100,7 +105,8 @@ const GameTurn = () => {
 
 const GameRunner = (() => {
   const playersList = Players();
-  let currentPlayer = playersList.getPlayers()[0]
+  let currentPlayer = () => playersList.getPlayers()[0]
+  
   const createPlayers = () => {
     const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value,"X"));
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
