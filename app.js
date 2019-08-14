@@ -74,13 +74,19 @@ const UIController = () => {
 const clickChange = (clickID) => {
   let change = document.getElementById(clickID);
   if(change.classList.value === "cell color-red"){
-    change.classList.add('color-black')
-  }
-  change.classList.add('color-red');
-  console.log(change.classList.value)
+    change.classList.remove('color-red');
+    change.classList.add('color-black');
+  }else if(change.classList.value === "cell color-black"){
+    change.classList.remove('color-black');
+    change.classList.add('color-red')
+  }else {
+    change.classList.add('color-red')    
+  }  
+  
 }
 const GameTurn = () => {
-
+  let turn = 0;
+  let player = GameRunner.playersList.getPlayers()[turn];
 }
 
 const GameRunner = (() => {
