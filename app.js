@@ -82,7 +82,7 @@ const UIController = () => {
 
 const clickChange = (clickID) => {
   let change = document.getElementById(clickID);
-  const mark =  GameRunner.currentPlayer().mark;
+  const mark =  GameRunner.currentPlayer().getPlayermark();
 
   if(mark === "X"){
     change.classList.add('color-blue');
@@ -92,11 +92,12 @@ const clickChange = (clickID) => {
     change.classList.add('color-red')    
   }  
   change.innerHTML= GameRunner.currentPlayer().getPlayermark()
-  if (mark === "X"){
+  /* if (mark === "X"){
     GameRunner.currentPlayer = () => GameRunner.playersList.getPlayers()[1]
   }else if(mark === "O"){
     GameRunner.currentPlayer = () => GameRunner.playersList.getPlayers()[0]
-  }
+  } */
+  GameRunner.changePlayer();
 }
 const GameTurn = () => {
   let turn = 0;
@@ -105,8 +106,9 @@ const GameTurn = () => {
 
 const GameRunner = (() => {
   const playersList = Players();
-  let currentPlayer = () => playersList.getPlayers()[0]
-  
+ 
+  let currentPlayer = () => playersList.getPlayers()[0];;
+  const changePlayer = () => {currentPlayer = () => [...playersList.getPlayers()].filter(e=>e.getPlayermark()==current.getPlayermark())[0]}
   const createPlayers = () => {
     const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value,"X"));
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
@@ -121,7 +123,7 @@ const GameRunner = (() => {
 
  
 
-  return {playersList,createPlayers,currentPlayer}
+  return {playersList,createPlayers,currentPlayer,changePlayer}
 })();
 
 
