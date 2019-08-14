@@ -114,8 +114,8 @@ const GameRunner = (() => {
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
     UIController().board.classList.remove('hide');
     const html = `
-      <div><span>Player 1 :</span><span>${player1.getPlayerName()}</span></div>
-      <div><span>Player 2 :</span><span>${player2.getPlayerName()}</span></div>
+      <div class="player-1"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
+      <div class="player-2"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
     `
     UIController().inputDetails.innerHTML = html;
     UIController().inputDetails.classList.add("ongoing")
