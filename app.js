@@ -55,22 +55,27 @@ const CheckWin = () => {
 
   if( (horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)|| (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)){
     UIController().statusText.innerText = 'player 1 is the winner!!';
-    UIController().statusText.;
+    UIController().statusText.classList.add('color-2');
     UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')});
     UIController().reload.classList.add('show');
+    UIController().reload.classList.add('color-2');
+    
     UIController().reload.addEventListener('click', GameRunner.reload);
     return true;
   }else if ( (horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)|| (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o) ) {
     UIController().statusText.innerText = 'player 2 is the winner!!';
-    UIController().statusText.classList.add("player-1");
+    UIController().statusText.classList.add('color-1');   
     UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')});
     UIController().reload.classList.add('show');
     UIController().reload.addEventListener('click', GameRunner.reload)
     return true;
   } else {
+    GameRunner.changePlayer()
     UIController().statusText.innerText = `${GameRunner.currentPlayer().name}'s turn`;
+
     return false;
   }
+
 }
 
 const UIController = () => {
@@ -104,8 +109,7 @@ const clickChange = (clickID,i) => {
   change.innerHTML= mark
   change.removeAttribute('onclick')
   GameRunner.gameBoard[i] = mark;
-  if (!GameRunner.checkWin()){
-    GameRunner.changePlayer();
+  if (!GameRunner.checkWin()){    
     mark = GameRunner.currentPlayer().getPlayermark();
     if(mark === "X"){
       UIController()['player-0'].classList.add('scale');

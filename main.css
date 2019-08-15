@@ -128,8 +128,17 @@
   border-radius: 14px;
   box-shadow: 10px 6px 10px -4px rgba(0,0,0,0.75);
   display: none; 
+  margin-top: 20px;
 }
 
 .show{
   display: inline-block;
+}
+
+.color-1{
+  background-color: #0f1161
+}
+
+.color-2{
+  background-color:orangered;
 }
