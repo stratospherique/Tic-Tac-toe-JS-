@@ -76,6 +76,8 @@
   transition: all .1s;  
   font-weight: bold;
   font-size: 20px;
+  color: beige;
+  
 }
 
 .player-0 {
@@ -83,7 +85,7 @@
 }
 
 .player-1 {
-  background-color: aqua;
+  background-color: #0f1161;
 }
 
 .scale{

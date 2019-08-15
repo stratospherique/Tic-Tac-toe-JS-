@@ -55,17 +55,17 @@ const CheckWin = () => {
 
   if( (horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)|| (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)){
     UIController().statusText.innerText = 'player 1 is the winner!!';
+    UIController().statusText.;
     UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')});
     UIController().reload.classList.add('show');
-    UIController().reload.addEventListener('click', function (){
-      location.reload();
-    });
+    UIController().reload.addEventListener('click', GameRunner.reload);
     return true;
   }else if ( (horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)|| (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o) ) {
     UIController().statusText.innerText = 'player 2 is the winner!!';
+    UIController().statusText.classList.add("player-1");
     UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')});
     UIController().reload.classList.add('show');
-    UIController().reload.addEventListener('click', GameRunner.reload())
+    UIController().reload.addEventListener('click', GameRunner.reload)
     return true;
   } else {
     UIController().statusText.innerText = `${GameRunner.currentPlayer().name}'s turn`;
@@ -137,12 +137,10 @@ const GameRunner = (() => {
     `;
     
     UIController().inputDetails.innerHTML = html;
-    setTimeout(function(){
-      UIController()[`player-${index}`].classList.add("scale");
-    },1000)
+    UIController()[`player-${index}`].classList.add("scale");
     UIController().statusBanner.classList.remove('hide');
     UIController().inputDetails.classList.add("ongoing");
-    UIController().statusText.innerText = player1.getPlayerName();
+    UIController().statusText.innerText = `${player1.getPlayerName()}'s turn`;
     
   }
   const reload = () => location.reload();
