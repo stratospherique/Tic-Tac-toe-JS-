@@ -1,9 +1,39 @@
+const GameRunner = (() => {
+  const gameBoard = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const playersList = Players();
+  let index = 0;
+  const currentPlayer = () => playersList.getPlayers()[index];
+  const changePlayer = () => { index = index === 1 ? 0 : 1; };
+  const createPlayers = () => {
+    const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value, 'X'));
+    const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value, 'O'));
+    UIController().board.classList.remove('hide');
+    const html = `
+      <div class="player player-0"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
+      <div class="player player-1"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
+    `;
+    UIController().inputDetails.innerHTML = html;
+    UIController()[`player-${index}`].classList.add('scale');
+    UIController().statusBanner.classList.remove('hide');
+    UIController().inputDetails.classList.add('ongoing');
+    UIController().statusText.innerText = `${player1.getPlayerName()}'s turn`;
+  };
+  const reload = () => location.reload();
+  const checkWin = () => CheckWin();
+
+  return {
+    // eslint-disable-next-line comma-dangle
+    playersList, createPlayers, currentPlayer, changePlayer, gameBoard, checkWin, reload
+  };
+})();
+
 const GameBoard = () => {
   const board = GameRunner.gameBoard;
   const position = {
     horizontal: {
       top: [board[0], board[1], board[2]].join(''),
       mid: [board[3], board[4], board[5]].join(''),
+      // eslint-disable-next-line comma-dangle
       low: [board[6], board[7], board[8]].join('')
     },
 
@@ -17,29 +47,31 @@ const GameBoard = () => {
       oneNine: [board[0], board[4], board[8]].join(''),
       threeSeven: [board[2], board[4], board[6]].join('')
     }
-  }
+  };
   return {
     board, position
-  }
-}
+  };
+};
 
 const Players = () => {
-  const players= [];
-  const getPlayers = () => {return players}
-  const add = function(player){
-    players.push(player)
-    return player
-  }
+  const players = [];
+  const getPlayers = () => { return players; };
+  const add = function (player) {
+    players.push(player);
+    return player;
+  };
   return {
-    getPlayers,add
-  }
-}
+    getPlayers, add
+  };
+};
 
-const PlayerFactory = (name,mark) => {
+const PlayerFactory = (name, mark) => {
   const getPlayerName = () => name;
   const getPlayermark = () => mark;
-  return { name ,mark,getPlayerName,getPlayermark};
-}
+  return { 
+    name, mark, getPlayerName, getPlayermark
+  };
+};
 
 const CheckWin = () => {
   const x = 'XXX';
@@ -53,16 +85,17 @@ const CheckWin = () => {
   const diagOne = GameBoard().position.diagonal.oneNine;
   const diagTwo = GameBoard().position.diagonal.threeSeven;
 
-  if( (horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)|| (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)){
+  if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
+  || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
     UIController().statusText.innerText = 'player 1 is the winner!!';
     UIController().statusText.classList.add('color-2');
-    UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')});
+    UIController().cells.forEach((cell) => { cell.removeAttribute('onclick'); });
     UIController().reload.classList.add('show');
     UIController().reload.classList.add('color-2');
-    
     UIController().reload.addEventListener('click', GameRunner.reload);
     return true;
-  }else if ( (horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)|| (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o) ) {
+  } else if ((horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)
+  || (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o)) {
     UIController().statusText.innerText = 'player 2 is the winner!!';
     UIController().statusText.classList.add('color-1');   
     UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')});
@@ -125,33 +158,7 @@ const GameTurn = () => {
   let player = GameRunner.playersList.getPlayers()[turn];
 }
 
-const GameRunner = (() => {
-  const gameBoard = [1,2,3,4,5,6,7,8,9];
-  const playersList = Players();
-  let index = 0;
-  let currentPlayer = () => playersList.getPlayers()[index];;
-  const changePlayer = () => {index = index == 1 ? 0 : 1}
-  const createPlayers = () => {
-    const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value,"X"));
-    const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
-    UIController().board.classList.remove('hide');
-    const html = `
-      <div class="player player-0"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
-      <div class="player player-1"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
-    `;
-    
-    UIController().inputDetails.innerHTML = html;
-    UIController()[`player-${index}`].classList.add("scale");
-    UIController().statusBanner.classList.remove('hide');
-    UIController().inputDetails.classList.add("ongoing");
-    UIController().statusText.innerText = `${player1.getPlayerName()}'s turn`;
-    
-  }
-  const reload = () => location.reload();
-  const checkWin = () => CheckWin(); 
 
-  return {playersList,createPlayers,currentPlayer,changePlayer,gameBoard,checkWin,reload}
-})();
 
 
 
