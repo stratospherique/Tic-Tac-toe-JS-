@@ -5,19 +5,41 @@
 
 .player-details {
   margin: 1rem auto;
+  padding: 1rem;
   width: 60vw;  
-  border: 1px solid;
+  border: 1px solid maroon;
   display: flex;
   border-radius: 14px;
+  background-color: goldenrod;
   box-shadow: 10px 6px 14px -4px rgba(0,0,0,0.75);
+
 }
+
+
 
 .ongoing {
   justify-content: space-between;
+  padding: 0;
+  box-shadow: none;
 }
 
 .player-details > input {
   margin: 0 .5rem;
+  border-radius:  4px;
+  text-align: center;
+  transition: all .5s;
+  padding: .5rem;
+}
+
+.player-details > input:focus {
+  box-shadow: 0px 0px 2px 2px blue;
+}
+
+#createP {
+  padding: 0 1rem;
+  border-radius: 4px;
+  background-color: rgba(72, 114, 86, 0.75);
+  border-color: transparent;
 }
 
 .board {
@@ -77,7 +99,7 @@
   font-weight: bold;
   font-size: 20px;
   color: beige;
-  
+
 }
 
 .player-0 {
