@@ -81,9 +81,6 @@ const UIController = () => {
 const clickChange = (clickID,i) => {
   let change = document.getElementById(clickID);
   let mark =  GameRunner.currentPlayer().getPlayermark();
-  
-
-
 
   if(mark === "X"){
     change.classList.add('color-blue');
