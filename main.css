@@ -63,7 +63,13 @@
   box-shadow: inset 0px 0px 14px 9px #ac72ce;
 }
 
+.player {
+  display: flex;
+  justify-content: center;
+}
+
 .player-0 {
+
   width: 50%;
   height: 100%;
   background-color: aqua;
@@ -73,6 +79,7 @@
 }
 
 .player-1 {
+  
   width: 50%;
   height: 100%;
   background-color: orangered;

@@ -73,20 +73,26 @@ const UIController = () => {
       cells: document.querySelectorAll('.cell'),
       statusBanner: document.getElementById('events'),
       statusText: document.querySelector('.status'),
-      "player-0": document.querySelector('.player-1'),
-      "player-1": document.querySelector('.player-2')
+      "player-0": document.querySelector('.player-0'),
+      "player-1": document.querySelector('.player-1')
   }
 }
 
 const clickChange = (clickID,i) => {
   let change = document.getElementById(clickID);
-  const mark =  GameRunner.currentPlayer().getPlayermark();
- 
+  let mark =  GameRunner.currentPlayer().getPlayermark();
+  
+
+
+
   if(mark === "X"){
     change.classList.add('color-blue');
-
+    UIController()['player-0'].classList.add('scale');
+    UIController()['player-1'].classList.remove('scale');
   }else if(mark === "O"){    
     change.classList.add('color-red')
+    UIController()['player-0'].classList.remove('scale');
+    UIController()['player-1'].classList.add('scale');
   }else {
     change.classList.add('color-red')    
   }  
@@ -95,6 +101,14 @@ const clickChange = (clickID,i) => {
   GameRunner.gameBoard[i] = mark;
   GameRunner.checkWin();
   GameRunner.changePlayer();
+  mark = GameRunner.currentPlayer().getPlayermark();
+  if(mark === "X"){
+    UIController()['player-0'].classList.add('scale');
+    UIController()['player-1'].classList.remove('scale');
+  }else {    
+    UIController()['player-0'].classList.remove('scale');
+    UIController()['player-1'].classList.add('scale');
+  }
 }
 const GameTurn = () => {
   let turn = 0;
@@ -112,12 +126,15 @@ const GameRunner = (() => {
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
     UIController().board.classList.remove('hide');
     const html = `
-      <div class="player-0"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
-      <div class="player-1"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
+      <div class="player player-0"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
+      <div class="player player-1"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
     `;
     
     UIController().inputDetails.innerHTML = html;
-    UIController()[`player-${index}`].classList.add("scale");
+    setTimeout(function(){
+      UIController()[`player-${index}`].classList.add("scale");
+    },1000)
+    
     UIController().inputDetails.classList.add("ongoing");
     UIController().statusText.innerText = player1.getPlayerName();
     
