@@ -114,3 +114,20 @@
 .hide {
   display: none;
 }
+
+.reload-container{
+  display: flex;
+  justify-content: center;
+}
+.reload{
+  padding: 1rem;
+  color: white;
+  background-color: #0f1161;
+  border-radius: 14px;
+  box-shadow: 10px 6px 10px -4px rgba(0,0,0,0.75);
+  display: none; 
+}
+
+.show{
+  display: inline-block;
+}

@@ -55,11 +55,17 @@ const CheckWin = () => {
 
   if( (horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)|| (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)){
     UIController().statusText.innerText = 'player 1 is the winner!!';
-    UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')})
+    UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')});
+    UIController().reload.classList.add('show');
+    UIController().reload.addEventListener('click', function (){
+      location.reload();
+    });
     return true;
   }else if ( (horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)|| (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o) ) {
     UIController().statusText.innerText = 'player 2 is the winner!!';
-    UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')})
+    UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')});
+    UIController().reload.classList.add('show');
+    UIController().reload.addEventListener('click', GameRunner.reload())
     return true;
   } else {
     UIController().statusText.innerText = `${GameRunner.currentPlayer().name}'s turn`;
@@ -77,7 +83,8 @@ const UIController = () => {
       statusBanner: document.querySelector('.events'),
       statusText: document.querySelector('.status'),
       "player-0": document.querySelector('.player-0'),
-      "player-1": document.querySelector('.player-1')
+      "player-1": document.querySelector('.player-1'),
+      reload: document.querySelector('.reload')
   }
 }
 
@@ -105,7 +112,7 @@ const clickChange = (clickID,i) => {
       UIController()['player-1'].classList.remove('scale');
     }else {    
       UIController()['player-0'].classList.remove('scale');
-      UIController()['player-1'].classList.add('scale');
+      UIController()['player-1'].classList.add('scale');      
     }
   }
 }
@@ -138,9 +145,10 @@ const GameRunner = (() => {
     UIController().statusText.innerText = player1.getPlayerName();
     
   }
+  const reload = () => location.reload();
   const checkWin = () => CheckWin(); 
 
-  return {playersList,createPlayers,currentPlayer,changePlayer,gameBoard,checkWin}
+  return {playersList,createPlayers,currentPlayer,changePlayer,gameBoard,checkWin,reload}
 })();
 
 
