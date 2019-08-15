@@ -4,23 +4,22 @@ const GameBoard = () => {
     horizontal: {
       top: [board[0], board[1], board[2]].join(''),
       mid: [board[3], board[4], board[5]].join(''),
-      // eslint-disable-next-line comma-dangle
-      low: [board[6], board[7], board[8]].join('')
+      low: [board[6], board[7], board[8]].join(''),
     },
 
     vertical: {
       left: [board[0], board[3], board[6]].join(''),
       middle: [board[1], board[4], board[7]].join(''),
-      right: [board[2], board[5], board[8]].join('')
+      right: [board[2], board[5], board[8]].join(''),
     },
 
     diagonal: {
       oneNine: [board[0], board[4], board[8]].join(''),
-      threeSeven: [board[2], board[4], board[6]].join('')
-    }
+      threeSeven: [board[2], board[4], board[6]].join(''),
+    },
   };
   return {
-    board, position
+    board, position,
   };
 };
 
@@ -32,15 +31,15 @@ const Players = () => {
     return player;
   };
   return {
-    getPlayers, add
+    getPlayers, add,
   };
 };
 
 const PlayerFactory = (name, mark) => {
   const getPlayerName = () => name;
   const getPlayermark = () => mark;
-  return { 
-    name, mark, getPlayerName, getPlayermark
+  return {
+    name, mark, getPlayerName, getPlayermark,
   };
 };
 
@@ -68,8 +67,8 @@ const CheckWin = () => {
   } if ((horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)
   || (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o)) {
     UIController().statusText.innerText = 'player 2 is the winner!!';
-    UIController().statusText.classList.add('color-1');   
-    UIController().cells.forEach((cell) => { cell.removeAttribute('onclick')});
+    UIController().statusText.classList.add('color-1');
+    UIController().cells.forEach((cell) => { cell.removeAttribute('onclick'); });
     UIController().reload.classList.add('show');
     UIController().reload.addEventListener('click', GameRunner.reload);
     return true;
@@ -92,7 +91,7 @@ const UIController = () => {
     statusText: document.querySelector('.status'),
     'player-0': document.querySelector('.player-0'),
     'player-1': document.querySelector('.player-1'),
-    reload: document.querySelector('.reload')
+    reload: document.querySelector('.reload'),
   };
 };
 
@@ -102,7 +101,6 @@ const clickChange = (clickID,i) => {
 
   if (mark === 'X') {
     change.classList.add ('color-red');
-    
   } else if (mark === 'O') {    
     change.classList.add('color-blue');
   } else {
@@ -118,7 +116,7 @@ const clickChange = (clickID,i) => {
       UIController()['player-1'].classList.remove('scale');
     } else {
       UIController()['player-0'].classList.remove('scale');
-      UIController()['player-1'].classList.add('scale');      
+      UIController()['player-1'].classList.add('scale');
     }
   }
 };
@@ -151,4 +149,4 @@ const GameRunner = (() => {
     playersList, createPlayers, currentPlayer, changePlayer, gameBoard, checkWin, reload
   };
 })();
-document.querySelector('#createP').addEventListener('click', GameRunner.createPlayers)
+document.querySelector('#createP').addEventListener('click', GameRunner.createPlayers);
