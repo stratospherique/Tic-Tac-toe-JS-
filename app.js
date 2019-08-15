@@ -68,20 +68,13 @@ const UIController = () => {
   return {    
       playerOneInput: document.querySelector('.nameInput-1'),
       playerTwoInput: document.querySelector('.nameInput-2'),
-      cellOne: document.getElementById("cell-1"),
-      cellTow: document.getElementById("cell-2"),
-      cellThree: document.getElementById("cell-3"),
-      cellFour: document.getElementById("cell-4"),
-      cellFive: document.getElementById("cell-5"),
-      cellSix: document.getElementById("cell-6"),
-      cellSeven: document.getElementById("cell-7"),
-      cellEight: document.getElementById("cell-8"),
-      cellNine: document.getElementById("cell-9"),
       board: document.querySelector('.board'),
       inputDetails: document.querySelector('.player-details'),
       cells: document.querySelectorAll('.cell'),
       statusBanner: document.getElementById('events'),
-      statusText: document.querySelector('.status')
+      statusText: document.querySelector('.status'),
+      "player-0": document.querySelector('.player-1'),
+      "player-1": document.querySelector('.player-2')
   }
 }
 
@@ -119,12 +112,15 @@ const GameRunner = (() => {
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value,"O"));  
     UIController().board.classList.remove('hide');
     const html = `
-      <div class="player-1"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
-      <div class="player-2"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
-    `
+      <div class="player-0"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
+      <div class="player-1"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
+    `;
+    
     UIController().inputDetails.innerHTML = html;
+    UIController()[`player-${index}`].classList.add("scale");
     UIController().inputDetails.classList.add("ongoing");
     UIController().statusText.innerText = player1.getPlayerName();
+    
   }
   const checkWin = () => CheckWin(); 
 
