@@ -33,9 +33,7 @@
     "dow dow dow"
 }
 
-.hide {
-  display: none;
-}
+
 
 .cell {  
   height: 200px;
@@ -95,7 +93,7 @@
   
 }
 
-#events {  
+.events {  
   display: flex;
   justify-content: center;
   width: 100%;
@@ -111,4 +109,8 @@
   color: white;
   font-weight: bold;
   font-size: 35px;
+}
+
+.hide {
+  display: none;
 }
