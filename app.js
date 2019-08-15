@@ -1,5 +1,5 @@
 const GameBoard = () => {
-  const board = ["1", "2", "3", "4", "o", "6", "7", "8", "9"];
+  const board = GameRunner.gameBoard;
   const position = {
     horizontal: {
       top: [board[0], board[1], board[2]].join(''),
@@ -42,19 +42,20 @@ const PlayerFactory = (name,mark) => {
 }
 
 const CheckWin = () => {
-  const x = 'xxx';
-  const o = 'ooo';
-  const horTop = GameRunner.gameBoard.position.horizontal.top;
-  const horMid = GameRunner.gameBoard.position.horizontal.mid;
-  const horDow = GameRunner.gameBoard.position.horizontal.down;
-  const verLeft = GameRunner.gameBoard.position.vertical.left;
-  const verMid = GameRunner.gameBoard.position.vertical.mid;
-  const verRight = GameRunner.gameBoard.position.vertical.right;
-  const diagOne = GameRunner.gameBoard.position.diagonal.oneNine;
-  const diagTwo = GameRunner.gameBoard.position.diagonal.threeSeven;
+  const x = 'XXX';
+  const o = 'OOO';
+  const horTop = GameBoard().position.horizontal.top;
+  const horMid = GameBoard().position.horizontal.mid;
+  const horDow = GameBoard().position.horizontal.down;
+  const verLeft = GameBoard().position.vertical.left;
+  const verMid = GameBoard().position.vertical.mid;
+  const verRight = GameBoard().position.vertical.right;
+  const diagOne = GameBoard().position.diagonal.oneNine;
+  const diagTwo = GameBoard().position.diagonal.threeSeven;
 
   if( (horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)|| (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)){
     console.log('X is the winner')
+    UIController().cells.
   }else if ( (horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)|| (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o) ) {
     console.log("O is the winner")
   } else {
@@ -76,7 +77,8 @@ const UIController = () => {
       cellEight: document.getElementById("cell-8"),
       cellNine: document.getElementById("cell-9"),
       board: document.querySelector('.board'),
-      inputDetails: document.querySelector('.player-details')
+      inputDetails: document.querySelector('.player-details'),
+      cells: document.querySelectorAll('.cell')
   }
 }
 
@@ -86,14 +88,16 @@ const clickChange = (clickID,i) => {
  
   if(mark === "X"){
     change.classList.add('color-blue');
+
   }else if(mark === "O"){    
     change.classList.add('color-red')
   }else {
     change.classList.add('color-red')    
   }  
   change.innerHTML= mark
-  GameRunner.gameBoard.board[i] = mark;
+  GameRunner.gameBoard[i] = mark;
   GameRunner.changePlayer();
+  GameRunner.checkWin();
 }
 const GameTurn = () => {
   let turn = 0;
@@ -101,7 +105,7 @@ const GameTurn = () => {
 }
 
 const GameRunner = (() => {
-  const gameBoard = GameBoard();
+  const gameBoard = [1,2,3,4,5,6,7,8,9];
   const playersList = Players();
   let index = 0;
   let currentPlayer = () => playersList.getPlayers()[index];;
@@ -117,10 +121,9 @@ const GameRunner = (() => {
     UIController().inputDetails.innerHTML = html;
     UIController().inputDetails.classList.add("ongoing")
   }
+  const checkWin = () => CheckWin(); 
 
- 
-
-  return {playersList,createPlayers,currentPlayer,changePlayer,gameBoard}
+  return {playersList,createPlayers,currentPlayer,changePlayer,gameBoard,checkWin}
 })();
 
 
