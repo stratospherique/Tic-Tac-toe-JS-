@@ -54,12 +54,13 @@ const CheckWin = () => {
   const diagTwo = GameBoard().position.diagonal.threeSeven;
 
   if( (horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)|| (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)){
-    console.log('X is the winner')
-    UIController().cells.
+    UIController().statusText.innerText = 'player 1 is the winner!!';
+    UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')})
   }else if ( (horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)|| (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o) ) {
-    console.log("O is the winner")
+    UIController().statusText.innerText = 'player 2 is the winner!!';
+    UIController().cells.forEach((cell)=>{cell.removeAttribute('onclick')})
   } else {
-    console.log("no winner yet")
+    UIController().statusText.innerText = `${GameRunner.currentPlayer().name}'s turn`;
   }
 }
 
@@ -78,7 +79,9 @@ const UIController = () => {
       cellNine: document.getElementById("cell-9"),
       board: document.querySelector('.board'),
       inputDetails: document.querySelector('.player-details'),
-      cells: document.querySelectorAll('.cell')
+      cells: document.querySelectorAll('.cell'),
+      statusBanner: document.getElementById('events'),
+      statusText: document.querySelector('.status')
   }
 }
 
@@ -95,9 +98,10 @@ const clickChange = (clickID,i) => {
     change.classList.add('color-red')    
   }  
   change.innerHTML= mark
+  change.removeAttribute('onclick')
   GameRunner.gameBoard[i] = mark;
-  GameRunner.changePlayer();
   GameRunner.checkWin();
+  GameRunner.changePlayer();
 }
 const GameTurn = () => {
   let turn = 0;
@@ -119,7 +123,8 @@ const GameRunner = (() => {
       <div class="player-2"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
     `
     UIController().inputDetails.innerHTML = html;
-    UIController().inputDetails.classList.add("ongoing")
+    UIController().inputDetails.classList.add("ongoing");
+    UIController().statusText.innerText = player1.getPlayerName();
   }
   const checkWin = () => CheckWin(); 
 

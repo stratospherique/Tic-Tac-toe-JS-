@@ -78,3 +78,10 @@
   padding: 1rem;
   border-radius: 0 14px 14px 0;
 }
+
+#events {
+  margin: 1rem auto;
+  border: 1px solid red;
+  padding: 1rem;
+  width: 40vw;
+}
