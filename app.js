@@ -54,30 +54,46 @@ const CheckWin = () => {
   const verRight = GameBoard().position.vertical.right;
   const diagOne = GameBoard().position.diagonal.oneNine;
   const diagTwo = GameBoard().position.diagonal.threeSeven;
-
+  let result = false;
   if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
   || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
+    handleStatus(1);
+    result = true;
+  } else if ((horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)
+  || (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o)) {
+    handleStatus(2);
+    result = true;
+  } else if (GameRunner.gameBoard.every((cell) => typeof cell === 'string')) {
+    handleStatus(-1);
+    result = true;
+  } else {
+    GameRunner.changePlayer();
+    UIController().statusText.innerText = `${GameRunner.currentPlayer().name}'s turn`;
+  }
+  return result;
+};
+
+const handleStatus = (condition) => {
+  if (condition === 1) {
     UIController().statusText.innerText = 'player 1 is the winner!!';
     UIController().statusText.classList.add('color-2');
     UIController().cells.forEach((cell) => { cell.removeAttribute('onclick'); });
     UIController().reload.classList.add('show');
     UIController().reload.classList.add('color-2');
     UIController().reload.addEventListener('click', GameRunner.reload);
-    return true;
-  } if ((horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)
-  || (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o)) {
+  } else if (condition === 2) {
     UIController().statusText.innerText = 'player 2 is the winner!!';
     UIController().statusText.classList.add('color-1');
     UIController().cells.forEach((cell) => { cell.removeAttribute('onclick'); });
     UIController().reload.classList.add('show');
     UIController().reload.addEventListener('click', GameRunner.reload);
-    return true;
+  } else {
+    UIController().statusText.innerText = 'It"s a draw!!';
+    UIController().statusText.classList.add('color-3');
+    UIController().cells.forEach((cell) => { cell.removeAttribute('onclick'); });
+    UIController().reload.classList.add('show');
+    UIController().reload.addEventListener('click', GameRunner.reload);
   }
-
-  GameRunner.changePlayer();
-  UIController().statusText.innerText = `${GameRunner.currentPlayer().name}'s turn`;
-
-  return false;
 };
 
 const UIController = () => {
@@ -109,7 +125,7 @@ const drawBoard = () => {
     }
   });
   if (!GameRunner.checkWin()) {
-    mark = GameRunner.currentPlayer().getPlayermark();
+    const mark = GameRunner.currentPlayer().getPlayermark();
     if (mark === 'X') {
       UIController()['player-0'].classList.add('scale');
       UIController()['player-1'].classList.remove('scale');
