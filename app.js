@@ -96,12 +96,9 @@ const UIController = () => {
 };
 
 const drawBoard = () => {
-  const {cells} = UIController();
-  let test = []
-  GameRunner.gameBoard.forEach((item,index)=>{
-    let mark = item === "X" ? item : "---";
-    mark = item === "O" ? item : "---";
-    test.push(mark)
+  const { cells } = UIController();
+  GameRunner.gameBoard.forEach((item,index) =>{
+    const mark = item === 'X' || item === 'O' ? item : '---';
     cells[index].textContent = mark;
     if (mark === 'X') {
       cells[index].classList.add('color-red');
@@ -109,26 +106,8 @@ const drawBoard = () => {
     } else if (mark === 'O') {    
       cells[index].classList.add('color-blue');
       cells[index].removeAttribute('onclick');
-    } 
+    }
   });
-  console.log(test)
-}
-
-const clickChange = (clickID,i) => {
- /* const change = document.getElementById(clickID);
-  let mark =  GameRunner.currentPlayer().getPlayermark();
-
-  if (mark === 'X') {
-    change.classList.add ('color-red');
-  } else if (mark === 'O') {    
-    change.classList.add('color-blue');
-  } else {
-    change.classList.add('color-red');
-  } 
-  change.innerHTML = mark;
-  change.removeAttribute('onclick');*/
-  GameRunner.gameBoard[i] = GameRunner.currentPlayer().getPlayermark();
-  drawBoard();
   if (!GameRunner.checkWin()) {
     mark = GameRunner.currentPlayer().getPlayermark();
     if (mark === 'X') {
@@ -139,6 +118,11 @@ const clickChange = (clickID,i) => {
       UIController()['player-1'].classList.add('scale');
     }
   }
+};
+
+const clickChange = (clickID, i) => {
+  GameRunner.gameBoard[i] = GameRunner.currentPlayer().getPlayermark();  
+  drawBoard();
 };
 
 const GameRunner = (() => {
