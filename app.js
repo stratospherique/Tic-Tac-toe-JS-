@@ -95,8 +95,27 @@ const UIController = () => {
   };
 };
 
+const drawBoard = () => {
+  const {cells} = UIController();
+  let test = []
+  GameRunner.gameBoard.forEach((item,index)=>{
+    let mark = item === "X" ? item : "---";
+    mark = item === "O" ? item : "---";
+    test.push(mark)
+    cells[index].textContent = mark;
+    if (mark === 'X') {
+      cells[index].classList.add('color-red');
+      cells[index].removeAttribute('onclick');
+    } else if (mark === 'O') {    
+      cells[index].classList.add('color-blue');
+      cells[index].removeAttribute('onclick');
+    } 
+  });
+  console.log(test)
+}
+
 const clickChange = (clickID,i) => {
-  const change = document.getElementById(clickID);
+ /* const change = document.getElementById(clickID);
   let mark =  GameRunner.currentPlayer().getPlayermark();
 
   if (mark === 'X') {
@@ -105,10 +124,11 @@ const clickChange = (clickID,i) => {
     change.classList.add('color-blue');
   } else {
     change.classList.add('color-red');
-  }
+  } 
   change.innerHTML = mark;
-  change.removeAttribute('onclick');
-  GameRunner.gameBoard[i] = mark;
+  change.removeAttribute('onclick');*/
+  GameRunner.gameBoard[i] = GameRunner.currentPlayer().getPlayermark();
+  drawBoard();
   if (!GameRunner.checkWin()) {
     mark = GameRunner.currentPlayer().getPlayermark();
     if (mark === 'X') {
