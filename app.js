@@ -25,7 +25,7 @@ const GameBoard = () => {
 
 const Players = () => {
   const players = [];
-  const getPlayers = () => { return players; };
+  const getPlayers = () => players;
   const add = (player) => {
     players.push(player);
     return player;
@@ -46,7 +46,7 @@ const PlayerFactory = (name, mark) => {
 const CheckWin = () => {
   const { position } = GameBoard();
   const { statusText } = UIController();
-  const { currentPlayer } = GameRunner;
+  const { currentPlayer, changePlayer } = GameRunner;
   const x = 'XXX';
   const o = 'OOO';
   const horTop = position.horizontal.top;
@@ -70,7 +70,7 @@ const CheckWin = () => {
     handleStatus(-1);
     result = true;
   } else {
-    GameRunner.changePlayer();
+    changePlayer();
     statusText.innerText = `${currentPlayer().name}'s turn`;
   }
   return result;
@@ -100,8 +100,8 @@ const handleStatus = (condition) => {
   }
 };
 
-const UIController = () => {
-  return {
+const UIController = () => (
+  {
     playerOneInput: document.querySelector('.nameInput-1'),
     playerTwoInput: document.querySelector('.nameInput-2'),
     board: document.querySelector('.board'),
@@ -112,27 +112,27 @@ const UIController = () => {
     'player-0': document.querySelector('.player-0'),
     'player-1': document.querySelector('.player-1'),
     reload: document.querySelector('.reload'),
-  };
-};
+  }
+);
+
 
 const drawBoard = () => {
-  const { currentPlayer } = GameRunner;
   const { cells } = UIController();
-  const { gameBoard } = GameRunner;
+  const { gameBoard, checkWin, currentPlayer } = GameRunner;
   const { 'player-0': player1, 'player-1': player2 } = UIController();
-  gameBoard.forEach((item,index) => {
+  gameBoard.forEach((item, index) => {
     const mark = item === 'X' || item === 'O' ? item : '---';
     cells[index].textContent = mark;
     if (mark === 'X') {
       cells[index].classList.add('color-red');
       cells[index].removeAttribute('onclick');
-    } else if (mark === 'O') {    
+    } else if (mark === 'O') {
       cells[index].classList.add('color-blue');
       cells[index].removeAttribute('onclick');
     }
   });
 
-  if (!GameRunner.checkWin()) {
+  if (!checkWin()) {
     const mark = currentPlayer().getPlayermark();
     if (mark === 'X') {
       player1.classList.add('scale');
@@ -145,11 +145,15 @@ const drawBoard = () => {
 };
 
 const clickChange = (i) => {
-  GameRunner.gameBoard[i] = GameRunner.currentPlayer().getPlayermark();  
+  const { gameBoard, currentPlayer } = GameRunner;
+  gameBoard[i] = currentPlayer().getPlayermark();
   drawBoard();
 };
 
 const GameRunner = (() => {
+  const {
+    inputDetails, board, statusBanner, statusText,
+  } = UIController();
   const gameBoard = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const playersList = Players();
   let index = 0;
@@ -158,22 +162,21 @@ const GameRunner = (() => {
   const createPlayers = () => {
     const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value, 'X'));
     const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value, 'O'));
-    UIController().board.classList.remove('hide');
+    board.classList.remove('hide');
     const html = `
       <div class="player player-0"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
       <div class="player player-1"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
     `;
-    UIController().inputDetails.innerHTML = html;
+    inputDetails.innerHTML = html;
     UIController()[`player-${index}`].classList.add('scale');
-    UIController().statusBanner.classList.remove('hide');
-    UIController().inputDetails.classList.add('ongoing');
-    UIController().statusText.innerText = `${player1.getPlayerName()}'s turn`;
+    statusBanner.classList.remove('hide');
+    inputDetails.classList.add('ongoing');
+    statusText.innerText = `${player1.getPlayerName()}'s turn`;
   };
   const reload = () => location.reload();
   const checkWin = () => CheckWin();
 
   return {
-    // eslint-disable-next-line comma-dangle
     playersList, createPlayers, currentPlayer, changePlayer, gameBoard, checkWin, reload
   };
 })();
