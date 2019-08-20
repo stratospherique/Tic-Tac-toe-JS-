@@ -144,7 +144,7 @@ const drawBoard = () => {
   }
 };
 
-const clickChange = (clickID, i) => {
+const clickChange = (i) => {
   GameRunner.gameBoard[i] = GameRunner.currentPlayer().getPlayermark();  
   drawBoard();
 };
