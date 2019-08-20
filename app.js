@@ -44,16 +44,19 @@ const PlayerFactory = (name, mark) => {
 };
 
 const CheckWin = () => {
+  const { position } = GameBoard();
+  const { statusText } = UIController();
+  const { currentPlayer } = GameRunner;
   const x = 'XXX';
   const o = 'OOO';
-  const horTop = GameBoard().position.horizontal.top;
-  const horMid = GameBoard().position.horizontal.mid;
-  const horDow = GameBoard().position.horizontal.down;
-  const verLeft = GameBoard().position.vertical.left;
-  const verMid = GameBoard().position.vertical.middle;
-  const verRight = GameBoard().position.vertical.right;
-  const diagOne = GameBoard().position.diagonal.oneNine;
-  const diagTwo = GameBoard().position.diagonal.threeSeven;
+  const horTop = position.horizontal.top;
+  const horMid = position.horizontal.mid;
+  const horDow = position.horizontal.down;
+  const verLeft = position.vertical.left;
+  const verMid = position.vertical.middle;
+  const verRight = position.vertical.right;
+  const diagOne = position.diagonal.oneNine;
+  const diagTwo = position.diagonal.threeSeven;
   let result = false;
   if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
   || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
@@ -68,31 +71,32 @@ const CheckWin = () => {
     result = true;
   } else {
     GameRunner.changePlayer();
-    UIController().statusText.innerText = `${GameRunner.currentPlayer().name}'s turn`;
+    statusText.innerText = `${currentPlayer().name}'s turn`;
   }
   return result;
 };
 
 const handleStatus = (condition) => {
+  const { statusText, cells, reload } = UIController();
   if (condition === 1) {
-    UIController().statusText.innerText = 'player 1 is the winner!!';
-    UIController().statusText.classList.add('color-2');
-    UIController().cells.forEach((cell) => { cell.removeAttribute('onclick'); });
-    UIController().reload.classList.add('show');
-    UIController().reload.classList.add('color-2');
-    UIController().reload.addEventListener('click', GameRunner.reload);
+    statusText.innerText = 'player 1 is the winner!!';
+    statusText.classList.add('color-2');
+    cells.forEach((cell) => { cell.removeAttribute('onclick'); });
+    reload.classList.add('show');
+    reload.classList.add('color-2');
+    reload.addEventListener('click', GameRunner.reload);
   } else if (condition === 2) {
-    UIController().statusText.innerText = 'player 2 is the winner!!';
-    UIController().statusText.classList.add('color-1');
-    UIController().cells.forEach((cell) => { cell.removeAttribute('onclick'); });
-    UIController().reload.classList.add('show');
-    UIController().reload.addEventListener('click', GameRunner.reload);
+    statusText.innerText = 'player 2 is the winner!!';
+    statusText.classList.add('color-1');
+    cells.forEach((cell) => { cell.removeAttribute('onclick'); });
+    reload.classList.add('show');
+    reload.addEventListener('click', GameRunner.reload);
   } else {
-    UIController().statusText.innerText = 'It"s a draw!!';
-    UIController().statusText.classList.add('color-3');
-    UIController().cells.forEach((cell) => { cell.removeAttribute('onclick'); });
-    UIController().reload.classList.add('show');
-    UIController().reload.addEventListener('click', GameRunner.reload);
+    statusText.innerText = 'It"s a draw!!';
+    statusText.classList.add('color-3');
+    cells.forEach((cell) => { cell.removeAttribute('onclick'); });
+    reload.classList.add('show');
+    reload.addEventListener('click', GameRunner.reload);
   }
 };
 
@@ -112,8 +116,11 @@ const UIController = () => {
 };
 
 const drawBoard = () => {
+  const { currentPlayer } = GameRunner;
   const { cells } = UIController();
-  GameRunner.gameBoard.forEach((item,index) =>{
+  const { gameBoard } = GameRunner;
+  const { 'player-0': player1, 'player-1': player2 } = UIController();
+  gameBoard.forEach((item,index) => {
     const mark = item === 'X' || item === 'O' ? item : '---';
     cells[index].textContent = mark;
     if (mark === 'X') {
@@ -124,14 +131,15 @@ const drawBoard = () => {
       cells[index].removeAttribute('onclick');
     }
   });
+
   if (!GameRunner.checkWin()) {
-    const mark = GameRunner.currentPlayer().getPlayermark();
+    const mark = currentPlayer().getPlayermark();
     if (mark === 'X') {
-      UIController()['player-0'].classList.add('scale');
-      UIController()['player-1'].classList.remove('scale');
+      player1.classList.add('scale');
+      player2.classList.remove('scale');
     } else {
-      UIController()['player-0'].classList.remove('scale');
-      UIController()['player-1'].classList.add('scale');
+      player1.classList.remove('scale');
+      player2.classList.add('scale');
     }
   }
 };
