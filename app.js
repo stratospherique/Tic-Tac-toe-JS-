@@ -177,7 +177,7 @@ const GameRunner = (() => {
   const checkWin = () => CheckWin();
 
   return {
-    playersList, createPlayers, currentPlayer, changePlayer, gameBoard, checkWin, reload
+    playersList, createPlayers, currentPlayer, changePlayer, gameBoard, checkWin, reload,
   };
 })();
 document.querySelector('#createP').addEventListener('click', GameRunner.createPlayers);
