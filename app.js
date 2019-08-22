@@ -7,37 +7,10 @@ const PlayerFactory = (name, mark) => {
   };
 };
 
-const CheckWin = () => {
-  const { position } = GameBoard;  
-  const { statusText } = UIController();
-  const { currentPlayer, changePlayer } = GameRunner;
-  const x = 'XXX';
-  const o = 'OOO';
-  const {
-    top: horTop, mid: horMid, down: horDow, left: verLeft,
-    middle: verMid, right: verRight, oneNine: diagOne, threeSeven: diagTwo
-  } = position();
-  let result = false;
-  if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
-  || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
-    handleStatus(1);
-    result = true;
-  } else if ((horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)
-  || (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o)) {
-    handleStatus(2);
-    result = true;
-  } else if (GameRunner.gameBoard.every((cell) => typeof cell === 'string')) {
-    handleStatus(-1);
-    result = true;
-  } else {
-    changePlayer();
-    statusText.innerText = `${currentPlayer().name}'s turn`;
-  }
-  return result;
-};
+
 
 const handleStatus = (condition) => {
-  const { statusText, cells, reload } = UIController();
+  const { statusText, cells, reload } = UIController.getDOM();
   if (condition === 1) {
     statusText.innerText = 'player 1 is the winner!!';
     statusText.classList.add('color-2');
@@ -60,47 +33,12 @@ const handleStatus = (condition) => {
   }
 };
 
-const clickChange = (i) => {
-  const { currentPlayer } = GameRunner;
-  const { drawBoard } = GameBoard;
-  currentPlayer().placeMarker(i);
-  drawBoard();
-};
-
-const UIController = () => (
-  {
-    playerOneInput: document.querySelector('.nameInput-1'),
-    playerTwoInput: document.querySelector('.nameInput-2'),
-    board: document.querySelector('.board'),
-    inputDetails: document.querySelector('.player-details'),
-    cells: document.querySelectorAll('.cell'),
-    statusBanner: document.querySelector('.events'),
-    statusText: document.querySelector('.status'),
-    'player-0': document.querySelector('.player-0'),
-    'player-1': document.querySelector('.player-1'),
-    reload: document.querySelector('.reload'),
-  }
-);
-
-const GameBoard = (() => {
-  const board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const position = () => ({
-    top: [board[0], board[1], board[2]].join(''),
-    mid: [board[3], board[4], board[5]].join(''),
-    low: [board[6], board[7], board[8]].join(''),
-    left: [board[0], board[3], board[6]].join(''),
-    middle: [board[1], board[4], board[7]].join(''),
-    right: [board[2], board[5], board[8]].join(''),
-    oneNine: [board[0], board[4], board[8]].join(''),
-    threeSeven: [board[2], board[4], board[6]].join(''),
-  }
-  );
-
+const UIController = (() => {
   const drawBoard = () => {
-    const { cells } = UIController();
+    const { cells } = UIController.getDOM();
     const { checkWin, currentPlayer } = GameRunner;
-    const { 'player-0': player1, 'player-1': player2 } = UIController();
-    board.forEach((item, index) => {
+    const { 'player-0': player1, 'player-1': player2 } = UIController.getDOM();
+    GameBoard.board.forEach((item, index) => {
       const mark = item === 'X' || item === 'O' ? item : '---';
       cells[index].textContent = mark;
       if (mark === 'X') {
@@ -122,15 +60,74 @@ const GameBoard = (() => {
       }
     }
   };
+  const getDOM = () => ({
+    playerOneInput: document.querySelector('.nameInput-1'),
+    playerTwoInput: document.querySelector('.nameInput-2'),
+    board: document.querySelector('.board'),
+    inputDetails: document.querySelector('.player-details'),
+    cells: document.querySelectorAll('.cell'),
+    statusBanner: document.querySelector('.events'),
+    statusText: document.querySelector('.status'),
+    'player-0': document.querySelector('.player-0'),
+    'player-1': document.querySelector('.player-1'),
+    reload: document.querySelector('.reload'),
+  });
   return {
-    board, position, drawBoard,
+    getDOM, drawBoard,
+  };
+})();
+
+const GameBoard = (() => {
+  const board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const position = () => ({
+    top: [board[0], board[1], board[2]].join(''),
+    mid: [board[3], board[4], board[5]].join(''),
+    low: [board[6], board[7], board[8]].join(''),
+    left: [board[0], board[3], board[6]].join(''),
+    middle: [board[1], board[4], board[7]].join(''),
+    right: [board[2], board[5], board[8]].join(''),
+    oneNine: [board[0], board[4], board[8]].join(''),
+    threeSeven: [board[2], board[4], board[6]].join(''),
+  }
+  );
+
+  const CheckWin = () => {
+    const { statusText } = UIController.getDOM();
+    const { currentPlayer, changePlayer } = GameRunner;
+    const x = 'XXX';
+    const o = 'OOO';
+    const {
+      top: horTop, mid: horMid, down: horDow, left: verLeft,
+      middle: verMid, right: verRight, oneNine: diagOne, threeSeven: diagTwo
+    } = position();
+    let result = false;
+    if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
+    || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
+      handleStatus(1);
+      result = true;
+    } else if ((horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)
+    || (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o)) {
+      handleStatus(2);
+      result = true;
+    } else if (board.every((cell) => typeof cell === 'string')) {
+      handleStatus(-1);
+      result = true;
+    } else {
+      changePlayer();
+      statusText.innerText = `${currentPlayer().name}'s turn`;
+    }
+    return result;
+  };
+
+  return {
+    board, position, CheckWin,
   };
 })();
 
 const GameRunner = (() => {
   const {
     inputDetails, board, statusBanner, statusText, playerOneInput, playerTwoInput,
-  } = UIController();
+  } = UIController.getDOM();
   const { board: gameBoard } = GameBoard;
   const playersList = [];
   let index = 0;
@@ -145,13 +142,18 @@ const GameRunner = (() => {
       <div class="player player-1"><span>Player 2: </span><span>${playersList[1].name}</span></div>
     `;
     inputDetails.innerHTML = html;
-    UIController()[`player-${index}`].classList.add('scale');
+    UIController.getDOM()[`player-${index}`].classList.add('scale');
     statusBanner.classList.remove('hide');
     inputDetails.classList.add('ongoing');
     statusText.innerText = `${playersList[0].name}'s turn`;
   };
-  const reload = () => reload();
+  const reload = () => location.reload();
   const checkWin = () => CheckWin();
+
+  const clickChange = (i) => {
+    currentPlayer().placeMarker(i);
+    UIController.drawBoard();
+  };
 
   return {
     playersList,
