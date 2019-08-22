@@ -156,6 +156,7 @@ const GameRunner = (() => {
     UIController.drawBoard();
   };
 
+
   return {
     playersList,
     createPlayers,
@@ -167,5 +168,3 @@ const GameRunner = (() => {
     clickChange,
   };
 })();
-
-document.querySelector('#createP').addEventListener('click', GameRunner.createPlayers);
