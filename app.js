@@ -1,15 +1,3 @@
-/* const Players = () => {
-  const players = [];
-  const getPlayers = () => players;
-  const add = (player) => {
-    players.push(player);
-    return player;
-  };
-  return {
-    getPlayers, add,
-  };
-}; */
-
 const PlayerFactory = (name, mark) => {
   const placeMarker = (index) => {
     GameBoard.board[index] = mark;
@@ -20,19 +8,13 @@ const PlayerFactory = (name, mark) => {
 };
 
 const CheckWin = () => {
-  const { board, position } = GameBoard;  
+  const { position } = GameBoard;  
   const { statusText } = UIController();
   const { currentPlayer, changePlayer } = GameRunner;
   const x = 'XXX';
   const o = 'OOO';
-  const horTop = position.horizontal.top;
-  const horMid = position.horizontal.mid;
-  const horDow = position.horizontal.down;
-  const verLeft = position.vertical.left;
-  const verMid = position.vertical.middle;
-  const verRight = position.vertical.right;
-  const diagOne = position.diagonal.oneNine;
-  const diagTwo = position.diagonal.threeSeven;
+  const {top:horTop,mid:horMid,down:horDow,left:verLeft,middle:verMid,right:verRight,oneNine:diagOne,threeSeven:diagTwo} = position();
+  
   let result = false;
   if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
   || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
@@ -128,24 +110,25 @@ const clickChange = (i) => {
 
 const GameBoard = (() => {
   const board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const position = {
-    horizontal: {
+  const position = () => ({
+    
       top: [board[0], board[1], board[2]].join(''),
       mid: [board[3], board[4], board[5]].join(''),
       low: [board[6], board[7], board[8]].join(''),
-    },
+    
 
-    vertical: {
+    
       left: [board[0], board[3], board[6]].join(''),
       middle: [board[1], board[4], board[7]].join(''),
       right: [board[2], board[5], board[8]].join(''),
-    },
+    
 
-    diagonal: {
+    
       oneNine: [board[0], board[4], board[8]].join(''),
       threeSeven: [board[2], board[4], board[6]].join(''),
-    },
-  };
+    
+  }
+  );
   return {
     board, position,
   };
