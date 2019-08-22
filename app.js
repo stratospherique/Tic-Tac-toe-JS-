@@ -13,8 +13,10 @@ const CheckWin = () => {
   const { currentPlayer, changePlayer } = GameRunner;
   const x = 'XXX';
   const o = 'OOO';
-  const {top:horTop,mid:horMid,down:horDow,left:verLeft,middle:verMid,right:verRight,oneNine:diagOne,threeSeven:diagTwo} = position();
-  
+  const {
+    top: horTop, mid: horMid, down: horDow, left: verLeft,
+    middle: verMid, right: verRight, oneNine: diagOne, threeSeven: diagTwo
+  } = position();
   let result = false;
   if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
   || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
@@ -58,6 +60,13 @@ const handleStatus = (condition) => {
   }
 };
 
+const clickChange = (i) => {
+  const { currentPlayer } = GameRunner;
+  const { drawBoard } = GameBoard;
+  currentPlayer().placeMarker(i);
+  drawBoard();
+};
+
 const UIController = () => (
   {
     playerOneInput: document.querySelector('.nameInput-1'),
@@ -73,64 +82,48 @@ const UIController = () => (
   }
 );
 
-
-const drawBoard = () => {
-  const { cells } = UIController();
-  const { gameBoard, checkWin, currentPlayer } = GameRunner;
-  const { 'player-0': player1, 'player-1': player2 } = UIController();
-  gameBoard.forEach((item, index) => {
-    const mark = item === 'X' || item === 'O' ? item : '---';
-    cells[index].textContent = mark;
-    if (mark === 'X') {
-      cells[index].classList.add('color-red');
-      cells[index].removeAttribute('onclick');
-    } else if (mark === 'O') {
-      cells[index].classList.add('color-blue');
-      cells[index].removeAttribute('onclick');
-    }
-  });
-
-  if (!checkWin()) {
-    const { mark } = currentPlayer();
-    if (mark === 'X') {
-      player1.classList.add('scale');
-      player2.classList.remove('scale');
-    } else {
-      player1.classList.remove('scale');
-      player2.classList.add('scale');
-    }
-  }
-};
-
-const clickChange = (i) => {
-  const { currentPlayer } = GameRunner;
-  currentPlayer().placeMarker(i);
-  drawBoard();
-};
-
 const GameBoard = (() => {
   const board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const position = () => ({
-    
-      top: [board[0], board[1], board[2]].join(''),
-      mid: [board[3], board[4], board[5]].join(''),
-      low: [board[6], board[7], board[8]].join(''),
-    
-
-    
-      left: [board[0], board[3], board[6]].join(''),
-      middle: [board[1], board[4], board[7]].join(''),
-      right: [board[2], board[5], board[8]].join(''),
-    
-
-    
-      oneNine: [board[0], board[4], board[8]].join(''),
-      threeSeven: [board[2], board[4], board[6]].join(''),
-    
+    top: [board[0], board[1], board[2]].join(''),
+    mid: [board[3], board[4], board[5]].join(''),
+    low: [board[6], board[7], board[8]].join(''),
+    left: [board[0], board[3], board[6]].join(''),
+    middle: [board[1], board[4], board[7]].join(''),
+    right: [board[2], board[5], board[8]].join(''),
+    oneNine: [board[0], board[4], board[8]].join(''),
+    threeSeven: [board[2], board[4], board[6]].join(''),
   }
   );
+
+  const drawBoard = () => {
+    const { cells } = UIController();
+    const { checkWin, currentPlayer } = GameRunner;
+    const { 'player-0': player1, 'player-1': player2 } = UIController();
+    board.forEach((item, index) => {
+      const mark = item === 'X' || item === 'O' ? item : '---';
+      cells[index].textContent = mark;
+      if (mark === 'X') {
+        cells[index].classList.add('color-red');
+        cells[index].removeAttribute('onclick');
+      } else if (mark === 'O') {
+        cells[index].classList.add('color-blue');
+        cells[index].removeAttribute('onclick');
+      }
+    });
+    if (!checkWin()) {
+      const { mark } = currentPlayer();
+      if (mark === 'X') {
+        player1.classList.add('scale');
+        player2.classList.remove('scale');
+      } else {
+        player1.classList.remove('scale');
+        player2.classList.add('scale');
+      }
+    }
+  };
   return {
-    board, position,
+    board, position, drawBoard,
   };
 })();
 
@@ -157,13 +150,18 @@ const GameRunner = (() => {
     inputDetails.classList.add('ongoing');
     statusText.innerText = `${playersList[0].name}'s turn`;
   };
-  const reload = () => location.reload();
+  const reload = () => reload();
   const checkWin = () => CheckWin();
 
   return {
-    playersList, createPlayers, currentPlayer, changePlayer, gameBoard, checkWin, reload,
+    playersList,
+    createPlayers,
+    currentPlayer,
+    changePlayer,
+    gameBoard,
+    checkWin,
+    reload,
+    clickChange,
   };
 })();
 document.querySelector('#createP').addEventListener('click', GameRunner.createPlayers);
-
-
