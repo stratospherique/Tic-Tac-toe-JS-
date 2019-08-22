@@ -23,7 +23,7 @@ const GameBoard = () => {
   };
 };
 
-const Players = () => {
+/* const Players = () => {
   const players = [];
   const getPlayers = () => players;
   const add = (player) => {
@@ -33,13 +33,14 @@ const Players = () => {
   return {
     getPlayers, add,
   };
-};
+}; */
 
 const PlayerFactory = (name, mark) => {
-  const getPlayerName = () => name;
-  const getPlayermark = () => mark;
+  const placeMarker = (index) => {
+    GameRunner.gameBoard[index] = mark;
+  }
   return {
-    name, mark, getPlayerName, getPlayermark,
+    name, mark, placeMarker,
   };
 };
 
@@ -133,7 +134,7 @@ const drawBoard = () => {
   });
 
   if (!checkWin()) {
-    const mark = currentPlayer().getPlayermark();
+    const mark = currentPlayer().mark;
     if (mark === 'X') {
       player1.classList.add('scale');
       player2.classList.remove('scale');
@@ -145,33 +146,33 @@ const drawBoard = () => {
 };
 
 const clickChange = (i) => {
-  const { gameBoard, currentPlayer } = GameRunner;
-  gameBoard[i] = currentPlayer().getPlayermark();
+  const { currentPlayer } = GameRunner;
+  currentPlayer().placeMarker(i);
   drawBoard();
 };
 
 const GameRunner = (() => {
   const {
-    inputDetails, board, statusBanner, statusText,
+    inputDetails, board, statusBanner, statusText, playerOneInput, playerTwoInput,
   } = UIController();
   const gameBoard = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const playersList = Players();
+  const playersList = [];
   let index = 0;
-  const currentPlayer = () => playersList.getPlayers()[index];
+  const currentPlayer = () => playersList[index];
   const changePlayer = () => { index = index === 1 ? 0 : 1; };
   const createPlayers = () => {
-    const player1 = playersList.add(PlayerFactory(UIController().playerOneInput.value, 'X'));
-    const player2 = playersList.add(PlayerFactory(UIController().playerTwoInput.value, 'O'));
+    playersList.push(PlayerFactory(playerOneInput.value, 'X'));
+    playersList.push(PlayerFactory(playerTwoInput.value, 'O'));
     board.classList.remove('hide');
     const html = `
-      <div class="player player-0"><span>Player 1: </span><span>${player1.getPlayerName()}</span></div>
-      <div class="player player-1"><span>Player 2: </span><span>${player2.getPlayerName()}</span></div>
+      <div class="player player-0"><span>Player 1: </span><span>${playersList[0].name}</span></div>
+      <div class="player player-1"><span>Player 2: </span><span>${playersList[1].name}</span></div>
     `;
     inputDetails.innerHTML = html;
     UIController()[`player-${index}`].classList.add('scale');
     statusBanner.classList.remove('hide');
     inputDetails.classList.add('ongoing');
-    statusText.innerText = `${player1.getPlayerName()}'s turn`;
+    statusText.innerText = `${playersList[0].name}'s turn`;
   };
   const reload = () => location.reload();
   const checkWin = () => CheckWin();
