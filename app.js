@@ -7,31 +7,53 @@ const PlayerFactory = (name, mark) => {
   };
 };
 
-
-
-const handleStatus = (condition) => {
-  const { statusText, cells, reload } = UIController.getDOM();
-  if (condition === 1) {
-    statusText.innerText = 'player 1 is the winner!!';
-    statusText.classList.add('color-2');
-    cells.forEach((cell) => { cell.removeAttribute('onclick'); });
-    reload.classList.add('show');
-    reload.classList.add('color-2');
-    reload.addEventListener('click', GameRunner.reload);
-  } else if (condition === 2) {
-    statusText.innerText = 'player 2 is the winner!!';
-    statusText.classList.add('color-1');
-    cells.forEach((cell) => { cell.removeAttribute('onclick'); });
-    reload.classList.add('show');
-    reload.addEventListener('click', GameRunner.reload);
-  } else {
-    statusText.innerText = 'It"s a draw!!';
-    statusText.classList.add('color-3');
-    cells.forEach((cell) => { cell.removeAttribute('onclick'); });
-    reload.classList.add('show');
-    reload.addEventListener('click', GameRunner.reload);
+const GameBoard = (() => {
+  const board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const position = () => ({
+    top: [board[0], board[1], board[2]].join(''),
+    mid: [board[3], board[4], board[5]].join(''),
+    low: [board[6], board[7], board[8]].join(''),
+    left: [board[0], board[3], board[6]].join(''),
+    middle: [board[1], board[4], board[7]].join(''),
+    right: [board[2], board[5], board[8]].join(''),
+    oneNine: [board[0], board[4], board[8]].join(''),
+    threeSeven: [board[2], board[4], board[6]].join(''),
   }
-};
+  );
+
+  const CheckWin = () => {
+    const { statusText } = UIController.getDOM();
+    const { currentPlayer, changePlayer } = GameRunner;
+    const { handleStatus } = UIController;
+    const x = 'XXX';
+    const o = 'OOO';
+    const {
+      top: horTop, mid: horMid, down: horDow, left: verLeft,
+      middle: verMid, right: verRight, oneNine: diagOne, threeSeven: diagTwo,
+    } = position();
+    let result = false;
+    if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
+    || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
+      handleStatus(1);
+      result = true;
+    } else if ((horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)
+    || (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o)) {
+      handleStatus(2);
+      result = true;
+    } else if (board.every((cell) => typeof cell === 'string')) {
+      handleStatus(-1);
+      result = true;
+    } else {
+      changePlayer();
+      statusText.innerText = `${currentPlayer().name}'s turn`;
+    }
+    return result;
+  };
+
+  return {
+    board, position, CheckWin,
+  };
+})();
 
 const UIController = (() => {
   const drawBoard = () => {
@@ -72,55 +94,33 @@ const UIController = (() => {
     'player-1': document.querySelector('.player-1'),
     reload: document.querySelector('.reload'),
   });
-  return {
-    getDOM, drawBoard,
-  };
-})();
-
-const GameBoard = (() => {
-  const board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const position = () => ({
-    top: [board[0], board[1], board[2]].join(''),
-    mid: [board[3], board[4], board[5]].join(''),
-    low: [board[6], board[7], board[8]].join(''),
-    left: [board[0], board[3], board[6]].join(''),
-    middle: [board[1], board[4], board[7]].join(''),
-    right: [board[2], board[5], board[8]].join(''),
-    oneNine: [board[0], board[4], board[8]].join(''),
-    threeSeven: [board[2], board[4], board[6]].join(''),
-  }
-  );
-
-  const CheckWin = () => {
-    const { statusText } = UIController.getDOM();
-    const { currentPlayer, changePlayer } = GameRunner;
-    const x = 'XXX';
-    const o = 'OOO';
-    const {
-      top: horTop, mid: horMid, down: horDow, left: verLeft,
-      middle: verMid, right: verRight, oneNine: diagOne, threeSeven: diagTwo
-    } = position();
-    let result = false;
-    if ((horTop === x) || (horMid === x) || (horDow === x) || (verLeft === x)
-    || (verMid === x) || (verRight === x) || (diagOne === x) || (diagTwo === x)) {
-      handleStatus(1);
-      result = true;
-    } else if ((horTop === o) || (horMid === o) || (horDow === o) || (verLeft === o)
-    || (verMid === o) || (verRight === o) || (diagOne === o) || (diagTwo === o)) {
-      handleStatus(2);
-      result = true;
-    } else if (board.every((cell) => typeof cell === 'string')) {
-      handleStatus(-1);
-      result = true;
+  const handleStatus = (condition) => {
+    const { statusText, cells, reload } = UIController.getDOM();
+    if (condition === 1) {
+      statusText.innerText = 'player 1 is the winner!!';
+      statusText.classList.add('color-2');
+      cells.forEach((cell) => { cell.removeAttribute('onclick'); });
+      reload.classList.add('show');
+      reload.classList.add('color-2');
+      reload.addEventListener('click', GameRunner.reload);
+    } else if (condition === 2) {
+      statusText.innerText = 'player 2 is the winner!!';
+      statusText.classList.add('color-1');
+      cells.forEach((cell) => { cell.removeAttribute('onclick'); });
+      reload.classList.add('show');
+      reload.addEventListener('click', GameRunner.reload);
     } else {
-      changePlayer();
-      statusText.innerText = `${currentPlayer().name}'s turn`;
+      statusText.innerText = 'It"s a draw!!';
+      statusText.classList.add('color-3');
+      cells.forEach((cell) => { cell.removeAttribute('onclick'); });
+      reload.classList.add('show');
+      reload.addEventListener('click', GameRunner.reload);
     }
-    return result;
   };
-
   return {
-    board, position, CheckWin,
+    getDOM,
+    drawBoard,
+    handleStatus,
   };
 })();
 
@@ -128,6 +128,7 @@ const GameRunner = (() => {
   const {
     inputDetails, board, statusBanner, statusText, playerOneInput, playerTwoInput,
   } = UIController.getDOM();
+  const { CheckWin } = GameBoard;
   const { board: gameBoard } = GameBoard;
   const playersList = [];
   let index = 0;
@@ -166,4 +167,5 @@ const GameRunner = (() => {
     clickChange,
   };
 })();
+
 document.querySelector('#createP').addEventListener('click', GameRunner.createPlayers);
