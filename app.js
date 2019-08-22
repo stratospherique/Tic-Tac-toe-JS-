@@ -1,28 +1,3 @@
-const GameBoard = () => {
-  const board = GameRunner.gameBoard;
-  const position = {
-    horizontal: {
-      top: [board[0], board[1], board[2]].join(''),
-      mid: [board[3], board[4], board[5]].join(''),
-      low: [board[6], board[7], board[8]].join(''),
-    },
-
-    vertical: {
-      left: [board[0], board[3], board[6]].join(''),
-      middle: [board[1], board[4], board[7]].join(''),
-      right: [board[2], board[5], board[8]].join(''),
-    },
-
-    diagonal: {
-      oneNine: [board[0], board[4], board[8]].join(''),
-      threeSeven: [board[2], board[4], board[6]].join(''),
-    },
-  };
-  return {
-    board, position,
-  };
-};
-
 /* const Players = () => {
   const players = [];
   const getPlayers = () => players;
@@ -37,15 +12,15 @@ const GameBoard = () => {
 
 const PlayerFactory = (name, mark) => {
   const placeMarker = (index) => {
-    GameRunner.gameBoard[index] = mark;
-  }
+    GameBoard.board[index] = mark;
+  };
   return {
     name, mark, placeMarker,
   };
 };
 
 const CheckWin = () => {
-  const { position } = GameBoard();
+  const { board, position } = GameBoard;  
   const { statusText } = UIController();
   const { currentPlayer, changePlayer } = GameRunner;
   const x = 'XXX';
@@ -134,7 +109,7 @@ const drawBoard = () => {
   });
 
   if (!checkWin()) {
-    const mark = currentPlayer().mark;
+    const { mark } = currentPlayer();
     if (mark === 'X') {
       player1.classList.add('scale');
       player2.classList.remove('scale');
@@ -151,11 +126,36 @@ const clickChange = (i) => {
   drawBoard();
 };
 
+const GameBoard = (() => {
+  const board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const position = {
+    horizontal: {
+      top: [board[0], board[1], board[2]].join(''),
+      mid: [board[3], board[4], board[5]].join(''),
+      low: [board[6], board[7], board[8]].join(''),
+    },
+
+    vertical: {
+      left: [board[0], board[3], board[6]].join(''),
+      middle: [board[1], board[4], board[7]].join(''),
+      right: [board[2], board[5], board[8]].join(''),
+    },
+
+    diagonal: {
+      oneNine: [board[0], board[4], board[8]].join(''),
+      threeSeven: [board[2], board[4], board[6]].join(''),
+    },
+  };
+  return {
+    board, position,
+  };
+})();
+
 const GameRunner = (() => {
   const {
     inputDetails, board, statusBanner, statusText, playerOneInput, playerTwoInput,
   } = UIController();
-  const gameBoard = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const { board: gameBoard } = GameBoard;
   const playersList = [];
   let index = 0;
   const currentPlayer = () => playersList[index];
@@ -182,3 +182,5 @@ const GameRunner = (() => {
   };
 })();
 document.querySelector('#createP').addEventListener('click', GameRunner.createPlayers);
+
+
